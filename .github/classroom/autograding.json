@@ -1,0 +1,144 @@
+{
+  "tests": [
+    {
+      "name": "Optionals Product Inventory Test",
+      "setup": "",
+      "run": "./gradlew optionals-productinventory-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Optionals Publisher Phase 0 Test",
+      "setup": "",
+      "run": "./gradlew optionals-publisher-phase0-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Optionals Publisher Phase 1 Test",
+      "setup": "",
+      "run": "./gradlew optionals-publisher-phase1-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Optionals Publisher Phase 2 Test",
+      "setup": "",
+      "run": "./gradlew optionals-publisher-phase2-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams File Validator Test",
+      "setup": "",
+      "run": "./gradlew streams-filevalidator-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams List Processing Test",
+      "setup": "",
+      "run": "./gradlew streams-listprocessing-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams Drills Collecting Drills Test",
+      "setup": "",
+      "run": "./gradlew streams-drills-collectingdrills-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams Drills Convert To Streams Drills Test",
+      "setup": "",
+      "run": "./gradlew streams-drills-converttostreamsdrills-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams Drills Optional Drills Test",
+      "setup": "",
+      "run": "./gradlew streams-drills-optionaldrills-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams Drills Stream Drills Test",
+      "setup": "",
+      "run": "./gradlew streams-drills-streamdrills-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams Drills Transaction Questions Test",
+      "setup": "",
+      "run": "./gradlew streams-drills-transactionquestions-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Groupwork Tests ",
+      "setup": "",
+      "run": "./gradlew groupwork-productpage-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Groupwork Stream Test",
+      "setup": "",
+      "run": "./gradlew groupwork-productpage-streamandoptional-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Streams List Processing Stream Test",
+      "setup": "",
+      "run": "./gradlew streams-listprocessing-streamcheck-test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    }
+  ]
+}
