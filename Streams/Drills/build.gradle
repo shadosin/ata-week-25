@@ -1,0 +1,42 @@
+plugins {
+    id 'ata-curriculum.snippets-conventions'
+}
+
+dependencies {
+    testImplementation 'org.mockito:mockito-inline:3.12.4'
+    implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
+}
+
+checkstyle {
+    def suppressionFile = rootProject.file('Utilities/ATACheckstyle/configuration/checkstyle/unit1/suppressions.xml')
+    configProperties.put('checkstyle.suppression.filter', suppressionFile)
+}
+
+def wflowToTestsMap = [
+        'streams-drills-collectingdrills-test': [
+                'com.kenzie.streams.drills.CollectingDrillsTest'
+        ],
+        'streams-drills-converttostreamsdrills-test': [
+                'com.kenzie.streams.drills.ConvertToStreamsDrillsTest'
+        ],
+        'streams-drills-optionaldrills-test': [
+                'com.kenzie.streams.drills.OptionalDrillsTest'
+        ],
+        'streams-drills-streamdrills-test': [
+                'com.kenzie.streams.drills.StreamDrillsTest'
+        ],
+        'streams-drills-transactionquestions-test': [
+                'com.kenzie.streams.drills.TransactionQuestionsTest'
+        ]
+]
+
+wflowToTestsMap.forEach { wflowName, testList ->
+    tasks.register(wflowName) {
+        dependsOn wflowtest
+        test.doFirst {
+            filter {
+                testList.each { includeTestsMatching it }
+            }
+        }
+    }
+}

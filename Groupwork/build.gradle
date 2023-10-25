@@ -1,0 +1,34 @@
+plugins {
+    id 'ata-curriculum.snippets-conventions'
+}
+
+
+dependencies {
+    implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
+    testImplementation 'org.mockito:mockito-inline:3.12.4'
+}
+
+checkstyle {
+    def suppressionFile = rootProject.file('Utilities/ATACheckstyle/configuration/checkstyle/unit1/suppressions.xml')
+    configProperties.put('checkstyle.suppression.filter', suppressionFile)
+}
+
+def wflowToTestsMap = [
+        'groupwork-productpage-test': [
+                'com.kenzie.groupwork.productpage.ProductPageTest'
+        ],
+        'groupwork-productpage-streamandoptional-test': [
+                'com.kenzie.groupwork.productpage.ProductPageStreamAndOptionalTest'
+        ]
+]
+
+wflowToTestsMap.forEach { wflowName, testList ->
+    tasks.register(wflowName) {
+        dependsOn wflowtest
+        test.doFirst {
+            filter {
+                testList.each { includeTestsMatching it }
+            }
+        }
+    }
+}
