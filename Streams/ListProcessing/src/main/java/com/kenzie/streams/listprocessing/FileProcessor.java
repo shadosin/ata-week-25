@@ -1,9 +1,13 @@
 package com.kenzie.streams.listprocessing;
 
 import com.kenzie.streams.listprocessing.resources.ProjectServerManager;
+import org.apache.commons.lang.WordUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FileProcessor {
 
@@ -24,7 +28,13 @@ public class FileProcessor {
      * @return Processed list.
      */
     public List<String> filterDocs(List<String> source) {
-        return null;
+        return Optional.ofNullable(source)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(file -> file.endsWith(".txt") || file.endsWith(".md"))
+                .map(String::toLowerCase)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -34,7 +44,13 @@ public class FileProcessor {
      * @return Processed Set.
      */
     public Set<String> filterJava(List<String> source) {
-        return null;
+
+        return Optional.ofNullable(source)
+                        .orElse(Collections.emptyList())
+                                .stream().
+                filter(file -> file.endsWith(".java"))
+                .map(WordUtils::capitalize)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -44,6 +60,9 @@ public class FileProcessor {
      * @param source Source list.
      */
     public void sortAndSubmitAll(List<String> source) {
-
+            source.stream()
+                    .sorted()
+                    .forEach(file -> Optional.ofNullable(file)
+                            .ifPresent(serverManager::submitToProject));
     }
 }

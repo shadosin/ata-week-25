@@ -1,7 +1,6 @@
 package com.kenzie.optionals.publisher.optionals.models;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Represents an author's publishing history by name.
@@ -38,6 +37,10 @@ public class Author {
      * @return An Optional containing the author's highest rated book, if any.
      */
     public Optional<Book> getBestRatedBook() {
-        return Optional.empty();  // Placeholder
+
+        return Optional.of(books)
+                .orElse(Collections.emptyList())
+                .stream()
+                .max(Comparator.comparingDouble(b-> b.getWeightedRating().orElse(Double.NEGATIVE_INFINITY)));  // Placeholder
     }
 }

@@ -7,13 +7,8 @@ import com.kenzie.groupwork.productpage.types.ProductV2;
 import com.kenzie.groupwork.productpage.types.ShippingProgramEnum;
 import com.kenzie.groupwork.productpage.types.SortByEnum;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.kenzie.groupwork.productpage.types.SortByEnum.PRICE_HIGH_TO_LOW;
 import static com.kenzie.groupwork.productpage.types.SortByEnum.PRICE_LOW_TO_HIGH;
@@ -41,22 +36,24 @@ public class ProductPage {
      *
      * Golf score: 10
      * Par: 4
-     * Your score: (ENTER YOUR SCORE HERE)
+     * Your score: (3)
      *
      * @return An Optional with the winning BuyingOption, or empty if none.
      */
     public Optional<ProductV2.BuyingOption> getFirstBuyingOption() {
-        //3 points: one assignment for 2 points and one method call for 1 point
+//        //3 points: one assignment for 2 points and one method call for 1 point
         List<ProductV2.BuyingOption> buyingOptions = productV2.buyingOptions();
-        //2 points: one conditional ! for 1 point, and one method call for 1 point
-        if (!buyingOptions.isEmpty()) {
-            //2 points: one return for 1 point and one method call for 1 point
-            return buyingOptions.stream()
-                    //1 point: one method call for 1 point
-                .findFirst();
-        }
-        //2 points: one return for 1 point and one method call for 1 point
-        return Optional.empty();
+//        //2 points: one conditional ! for 1 point, and one method call for 1 point
+//        if (!buyingOptions.isEmpty()) {
+//            //2 points: one return for 1 point and one method call for 1 point
+//            return buyingOptions.stream()
+//                    //1 point: one method call for 1 point
+//                .findFirst();
+//        }
+//        //2 points: one return for 1 point and one method call for 1 point
+        return Optional.ofNullable(buyingOptions)
+                .orElse(Collections.emptyList())
+                .stream().findFirst();
     }
 
     /**
@@ -67,33 +64,41 @@ public class ProductPage {
      *
      * Golf score: 18
      * Par: 8
-     * Your score: (ENTER YOUR SCORE HERE)
+     * Your score: (6)
      *
      * @param longestDimension The size of the longest dimension of the image.
      * @return Optional containing the image URL, or empty if no image exists.
      */
     public Optional<String> extractMainImageUrl(Integer longestDimension) {
         //3 points: one assignment for 2 points and one method call for 1 point
-        Optional<ProductImagesV2> productImagesOptional = productV2.productImages();
+        //Optional<ProductImagesV2> productImagesOptional = productV2.productImages();
         //1 points: one method call for 1 point
-        if (productImagesOptional.isPresent()) {
-            //3 points: one assignment for 2 points and one method call for 1 point
-            ProductImagesV2 productImages = productImagesOptional.get();
-            //3 points: one assignment for 2 points and one method call for 1 point
-            List<ProductImagesV2.Image> images = productImages.images();
-            //0 points: for loops declarations are free and no other methods called in declaration
-            for (ProductImagesV2.Image image : images) {
-                //3 points: one assignment for 2 points and one method call for 1 point
-                String url = extractImageUrl(image, longestDimension);
-                //1 point: one comparison for 1 point
-                if (url != null) {
-                    //2 points: one return for 1 point and 1 method call for 1 point
-                    return Optional.of(url);
-                }
-            }
-        }
+//        if (productImagesOptional.isPresent()) {
+//            //3 points: one assignment for 2 points and one method call for 1 point
+//            ProductImagesV2 productImages = productImagesOptional.get();
+//            //3 points: one assignment for 2 points and one method call for 1 point
+//            List<ProductImagesV2.Image> images = productImages.images();
+//            //0 points: for loops declarations are free and no other methods called in declaration
+//            for (ProductImagesV2.Image image : images) {
+//                //3 points: one assignment for 2 points and one method call for 1 point
+//                String url = extractImageUrl(image, longestDimension);
+//                //1 point: one comparison for 1 point
+//                if (url != null) {
+//                    //2 points: one return for 1 point and 1 method call for 1 point
+//                    return Optional.of(url);
+//                }
+//            }
+//        }
         //2 points: one return for 1 point and 1 method call for 1 point
-        return Optional.empty();
+           return Optional.ofNullable(productV2.productImages())
+                .flatMap(productImagesOptional ->
+                        productImagesOptional.map(ProductImagesV2::images)
+                                .orElseGet(Collections::emptyList)
+                                .stream()
+                                .map(image -> extractImageUrl(image, longestDimension))
+                                .filter(Objects::nonNull)
+                                .findFirst()
+                );
     }
 
     /**
@@ -101,38 +106,46 @@ public class ProductPage {
      *
      * Golf score: 24
      * Par: 11
-     * Your score: (ENTER YOUR SCORE HERE)
+     * Your score: (8)
      *
      * @param longestDimension the size of the image's longest dimension.
      * @return An Optional containing the URL of the image, or empty if no image exists.
      */
     public Optional<String> extractLookImageUrl(Integer longestDimension) {
-        //3 points: one assignment for 2 points and one method call for 1 point
-        Optional<ProductImagesV2> productImages = productV2.productImages();
-        //1 points: one method call for 1 point
-        if (productImages.isPresent()) {
-            //3 points: one assignment for 2 points and one method call for 1 point
-            ProductImagesV2 productImagesV2 = productImages.get();
-            //3 points: one assignment for 2 points and one method call for 1 point
-            List<ProductImagesV2.Image> images = productImagesV2.images();
-            //0 points: for loops declarations are free and no other methods called in declaration
-            for (ProductImagesV2.Image image : images) {
-                //3 points: one assignment for 2 points and one method call for 1 point
-                String variant = image.variant();
-                //3 points: one comparison for 1 point, one conditional for 1 point, and one method call for 1 point
-                if (variant != null && variant.equals(LOOK_VARIANT)) {
-                    //3 points: one assignment for 2 points and one method call for 1 point
-                    String url = extractImageUrl(image, longestDimension);
-                    //1 point: one comparison for 1 point
-                    if (url != null) {
-                        //2 points: one return for 1 point and 1 method call for 1 point
-                        return Optional.of(url);
-                    }
-                }
-            }
-        }
+//        //3 points: one assignment for 2 points and one method call for 1 point
+//        Optional<ProductImagesV2> productImages = productV2.productImages();
+//        //1 points: one method call for 1 point
+//        if (productImages.isPresent()) {
+//            //3 points: one assignment for 2 points and one method call for 1 point
+//            ProductImagesV2 productImagesV2 = productImages.get();
+//            //3 points: one assignment for 2 points and one method call for 1 point
+//            List<ProductImagesV2.Image> images = productImagesV2.images();
+//            //0 points: for loops declarations are free and no other methods called in declaration
+//            for (ProductImagesV2.Image image : images) {
+//                //3 points: one assignment for 2 points and one method call for 1 point
+//                String variant = image.variant();
+//                //3 points: one comparison for 1 point, one conditional for 1 point, and one method call for 1 point
+//                if (variant != null && variant.equals(LOOK_VARIANT)) {
+//                    //3 points: one assignment for 2 points and one method call for 1 point
+//                    String url = extractImageUrl(image, longestDimension);
+//                    //1 point: one comparison for 1 point
+//                    if (url != null) {
+//                        //2 points: one return for 1 point and 1 method call for 1 point
+//                        return Optional.of(url);
+//                    }
+//                }
+//            }
+//        }
         //2 points: one return for 1 point and 1 method call for 1 point
-        return Optional.empty();
+        return Optional.ofNullable(productV2.productImages())
+                .flatMap(productImagesOptional -> productImagesOptional
+                        .map(ProductImagesV2::images)
+                        .orElseGet(Collections::emptyList)
+                        .stream()
+                        .filter(image -> LOOK_VARIANT.equals(image.variant()))
+                        .map(image -> extractImageUrl(image, longestDimension))
+                        .filter(Objects::nonNull)
+                        .findFirst());
     }
 
     /**
@@ -145,44 +158,50 @@ public class ProductPage {
      *
      * Golf score: 22
      * Par: 18
-     * Your score: (ENTER YOUR SCORE HERE)
+     * Your score: (9)
      */
     public List<ProductV2> getSimilarProducts(final SortByEnum sortBy,
                                               final PriceRangeOption priceRange,
                                               final PrimeOption primeOption) {
 
-        //4 points: one assignment for 2 points, two method calls for 1 point each
-        Comparator<ProductV2> sorter = comparatorForSortBy.getOrDefault(sortBy, passthroughComparator());
-        //3 points: one assignment for 2 points and one method call for 1 point
-        final List<ProductV2> unorderedProducts = productV2.getSimilarProducts();
-        //3 points: one assignment for 2 points and one constructor for 1 point
-        final List<ProductV2> matchingProducts = new ArrayList<>();
-        //1 point: one comparison for 1 point
-        if (unorderedProducts != null) {
-            //0 points: one for loop declaration with no other methods in the declaration
-            for (ProductV2 product : unorderedProducts) {
-                //2 point: one method call for 1 point and one conditional for 1 point
-                if (Objects.nonNull(product) &&
-                        //2 point: one method call for 1 point and one conditional for 1 point
-                    product.isValid() &&
-                        //2 points: two method calls for 1 point each
-                    priceRange.priceIsWithin(product.getPrice())) {
-                    //1 point: one method call inside the for loop declaraion for 1 point
-                    for (ShippingProgramEnum shippingProgram : product.getShippingPrograms()) {
-                        //1 point: one method call for 1 point
-                        if (primeOption.matches(shippingProgram)) {
-                            //1 point: one method call for 1 point
-                            matchingProducts.add(product);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        //1 point: one method call for 1 point
-        matchingProducts.sort(sorter);
+//        //4 points: one assignment for 2 points, two method calls for 1 point each
+//        Comparator<ProductV2> sorter = comparatorForSortBy.getOrDefault(sortBy, passthroughComparator());
+//        //3 points: one assignment for 2 points and one method call for 1 point
+//        final List<ProductV2> unorderedProducts = productV2.getSimilarProducts();
+//        //3 points: one assignment for 2 points and one constructor for 1 point
+//        final List<ProductV2> matchingProducts = new ArrayList<>();
+//        //1 point: one comparison for 1 point
+//        if (unorderedProducts != null) {
+//            //0 points: one for loop declaration with no other methods in the declaration
+//            for (ProductV2 product : unorderedProducts) {
+//                //2 point: one method call for 1 point and one conditional for 1 point
+//                if (Objects.nonNull(product) &&
+//                        //2 point: one method call for 1 point and one conditional for 1 point
+//                    product.isValid() &&
+//                        //2 points: two method calls for 1 point each
+//                    priceRange.priceIsWithin(product.getPrice())) {
+//                    //1 point: one method call inside the for loop declaraion for 1 point
+//                    for (ShippingProgramEnum shippingProgram : product.getShippingPrograms()) {
+//                        //1 point: one method call for 1 point
+//                        if (primeOption.matches(shippingProgram)) {
+//                            //1 point: one method call for 1 point
+//                            matchingProducts.add(product);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        //1 point: one method call for 1 point
+//        matchingProducts.sort(sorter);
         //1 point: one return for 1 point
-        return matchingProducts;
+        return Optional.ofNullable(productV2.getSimilarProducts())
+                .stream()
+                .flatMap(List::stream)
+                .filter(product -> Objects.nonNull(product) && product.isValid() && priceRange.priceIsWithin(product.getPrice()))
+                .filter(product -> product.getShippingPrograms().stream().anyMatch(primeOption::matches))
+                .sorted(comparatorForSortBy.getOrDefault(sortBy, passthroughComparator()))
+                .collect(Collectors.toList());
     }
 
     /**

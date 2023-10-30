@@ -1,9 +1,8 @@
 package com.kenzie.optionals.productinventory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import javax.swing.text.html.Option;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ProductInventory collects groups of items to be shipped. It uses a 
@@ -36,7 +35,31 @@ public class ProductInventory {
      * @return Map[Integer, String] of product IDs to product names. Does not include products without names.
      */
     Map<Integer, String> findProductNames() {
-        return new HashMap<Integer, String>();  // Placeholder
+        Optional.ofNullable(productIDs)
+                .orElseThrow(()-> new IllegalArgumentException("productID is null"));
+        Optional.ofNullable(productUtility)
+                .orElseThrow(()-> new IllegalArgumentException("productUtility is null"));
+        return Optional.ofNullable(productIDs)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(id -> {
+                    try {
+                        return productUtility.findProductName(id) != null;
+                    } catch (NullPointerException e) {
+                        throw new IllegalArgumentException("productID is null");
+                    }
+                })
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> {
+                            try {
+                                return productUtility.findProductName(id);
+                            } catch (NullPointerException e) {
+                                throw new IllegalArgumentException("productName is null");
+                            }
+                        },
+                        (existing, replacement) -> existing
+                ));
     }
 
     /**
@@ -45,6 +68,26 @@ public class ProductInventory {
      * @return Optional[Boolean] containing whether a product is ready to ship.
      */
     Optional<Boolean> isProductReady(Integer productID) {
-        return Optional.empty();  // Placeholder
+        Optional<ProductUtility> productUtilityOptional = Optional.ofNullable(productUtility);
+
+        if (productUtilityOptional.isEmpty()) {
+            throw new IllegalArgumentException("productUtility is null");
+        }
+
+        try {
+            if (productID == null) {
+                throw new IllegalArgumentException("The productID was null");
+            }
+
+            Boolean readinessStatus = productUtility.isProductReady(productID);
+
+            if (readinessStatus == null) {
+                return Optional.empty();
+            } else {
+                return Optional.of(readinessStatus);
+            }
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("The productID was null");
+        }
     }
 }
